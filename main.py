@@ -12,8 +12,13 @@ settings_menu = SettingsMenu()
 game_menu = GameMenu(settings_menu)
 # init entities
 all_sprites = pygame.sprite.Group()
+food_sprite = pygame.sprite.Group()
 snake = Snake()
+food = Food()
 all_sprites.add(snake)
+food_sprite.add(food)
+food_sprite.update()
+
 
 # variable for controlling movements
 x_mov = 0       
@@ -21,7 +26,7 @@ y_mov = 0
 # variable for loop control
 running = True
 while running:
-    clock.tick(10)
+    clock.tick(1)
     # game_menu.mainloop(surface)
     for event in pygame.event.get():
         # check for closing window
@@ -48,7 +53,10 @@ while running:
 
     # update screen
     all_sprites.update(x_mov, y_mov)
+    if (snake.rect.x == food.rect.x) and (snake.rect.y == food.rect.y):
+        food_sprite.update()
     surface.fill((0, 0, 0))
+    food_sprite.draw(surface)
     all_sprites.draw(surface)
     
     pygame.display.flip()
