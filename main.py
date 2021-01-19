@@ -24,6 +24,10 @@ food = Food()
 food_sprite.add(food)
 food_sprite.update()
 
+# init score
+score = 0
+font = pygame.font.SysFont(None, 36)
+
 # variable for controlling movements
 x_mov = 0       
 y_mov = 0
@@ -33,6 +37,9 @@ running = True
 
 # game loop
 while running:
+    # init object for displaying score
+    score_disp = font.render(f'Score: {score}', 1, (165, 42, 42))
+    # FPS
     clock.tick(5)
     #game_menu.mainloop(surface)
     for event in pygame.event.get():
@@ -70,6 +77,8 @@ while running:
     # update screen
     snake.update(x_mov, y_mov)
     if food.chek_eating(snake_head):
+        # adding points
+        score += 1
         # get coordinates of the last element of the snake
         tail_x = snake.get_sprite(-1).rect.x
         tail_y = snake.get_sprite(-1).rect.y
@@ -79,6 +88,7 @@ while running:
         food_sprite.update()
     # update playing field
     surface.fill((0, 0, 0))
+    surface.blit(score_disp, (0, 0))
     food_sprite.draw(surface)
     snake.draw(surface)
     
