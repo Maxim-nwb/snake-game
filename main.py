@@ -3,7 +3,7 @@ from menu import GameMenu, SettingsMenu
 from game_entities import *
 
 
-
+# init game
 pygame.init()
 surface = pygame.display.set_mode((600, 500))
 clock = pygame.time.Clock()
@@ -28,7 +28,6 @@ food_sprite.update()
 x_mov = 0       
 y_mov = 0
 last_mov = None # last direction of movement
-
 # variable for loop control
 running = True
 
@@ -59,6 +58,10 @@ while running:
                 x_mov = 0
                 y_mov = 10
                 last_mov = "DOWN"
+
+    # stop game if snake touched the yourself
+    if len(snake.get_sprites_at((snake_head.rect.x, snake_head.rect.y))) > 1 and len(snake) > 2:
+        running = False
 
     # stop game if snake touched the borders
     if snake_head.rect.x >= 600 or snake_head.rect.x < 0 or snake_head.rect.y >= 500 or snake_head.rect.y < 0:
