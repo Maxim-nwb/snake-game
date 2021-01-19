@@ -42,19 +42,19 @@ while running:
         # snake movements
         # change the direction and remember
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFT:
+            if event.key == pygame.K_LEFT and last_mov != "RIGHT":
                 x_mov = -10
                 y_mov = 0
                 last_mov = "LEFT"
-            elif event.key == pygame.K_RIGHT:
+            elif event.key == pygame.K_RIGHT and last_mov != "LEFT":
                 x_mov = 10
                 y_mov = 0
                 last_mov = "RIGHT"
-            elif event.key == pygame.K_UP:
+            elif event.key == pygame.K_UP and last_mov != "DOWN":
                 x_mov = 0
                 y_mov = -10
                 last_mov = "UP"
-            elif event.key == pygame.K_DOWN:
+            elif event.key == pygame.K_DOWN and last_mov != "UP":
                 x_mov = 0
                 y_mov = 10
                 last_mov = "DOWN"
