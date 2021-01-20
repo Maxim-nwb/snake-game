@@ -21,15 +21,6 @@ class SettingsMenu(pygame_menu.Menu):
 
     def create_widgets(self):
         self.add_text_input('Player: ', default='Username')
-        self.add_selector(title="Snake Color: ", 
-                          items=[
-                                 ('Black', (0, 0, 0)),
-                                 ('White', (255, 255, 255)),
-                                 ('Green', (0, 255, 0)),
-                                 ('Red', (255, 0, 0)),
-                                 ('Blue', (12, 12, 200))
-                                 ], 
-                          )
         self.add_selector("Background Color: ", 
                           items=[
                                  ('Black', (0, 0, 0)),

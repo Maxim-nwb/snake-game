@@ -16,7 +16,7 @@ game_menu.enable()
 # init entities
 # init snake
 snake = pygame.sprite.LayeredUpdates()
-snake_head = Snake(300, 250, 0)
+snake_head = Snake("textures/snake_head.png", 300, 250, 0)
 snake.add(snake_head)
 food_sprite = pygame.sprite.Group()
 
@@ -46,7 +46,7 @@ while running:
     # init object for displaying score
     score_disp = font.render(f'Score: {score}', 1, (165, 42, 42))
     # FPS
-    clock.tick(5)
+    clock.tick(10)
     for event in pygame.event.get():
         # check for closing window
         if event.type == pygame.QUIT:
@@ -56,20 +56,20 @@ while running:
             # snake movement
             # change the direction and remember
             if event.key == pygame.K_LEFT and last_mov != "RIGHT":
-                x_mov = -10
+                x_mov = -15
                 y_mov = 0
                 last_mov = "LEFT"
             elif event.key == pygame.K_RIGHT and last_mov != "LEFT":
-                x_mov = 10
+                x_mov = 15
                 y_mov = 0
                 last_mov = "RIGHT"
             elif event.key == pygame.K_UP and last_mov != "DOWN":
                 x_mov = 0
-                y_mov = -10
+                y_mov = -15
                 last_mov = "UP"
             elif event.key == pygame.K_DOWN and last_mov != "UP":
                 x_mov = 0
-                y_mov = 10
+                y_mov = 15
                 last_mov = "DOWN"
             # pause
             elif event.key == pygame.K_ESCAPE:
@@ -78,7 +78,7 @@ while running:
 
 
     # stop game if snake touched the yourself
-    if len(snake.get_sprites_at((snake_head.rect.x, snake_head.rect.y))) > 1 and len(snake) > 2:
+    if len(pygame.sprite.spritecollide(snake_head, snake, False)) > 1 and len(snake) > 3:
         running = False
 
     # stop game if snake touched the borders
@@ -94,7 +94,7 @@ while running:
         tail_x = snake.get_sprite(-1).rect.x
         tail_y = snake.get_sprite(-1).rect.y
         # adding a new element of the snake
-        snake.add(Snake(tail_x, tail_y, len(snake)))
+        snake.add(Snake("textures/snake.png", tail_x, tail_y, len(snake)))
         # creating new food
         food_sprite.update()
     # update playing field
