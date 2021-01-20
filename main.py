@@ -11,6 +11,7 @@ clock = pygame.time.Clock()
 # init menu
 settings_menu = SettingsMenu()
 game_menu = GameMenu(settings_menu)
+game_menu.enable()
 
 # init entities
 # init snake
@@ -32,23 +33,28 @@ font = pygame.font.SysFont(None, 36)
 x_mov = 0       
 y_mov = 0
 last_mov = None # last direction of movement
+
 # variable for loop control
 running = True
 
 # game loop
 while running:
+    # launching the menu
+    if game_menu.is_enabled():
+        game_menu.mainloop(surface)
+
     # init object for displaying score
     score_disp = font.render(f'Score: {score}', 1, (165, 42, 42))
     # FPS
     clock.tick(5)
-    #game_menu.mainloop(surface)
     for event in pygame.event.get():
         # check for closing window
         if event.type == pygame.QUIT:
             running = False
-        # snake movements
-        # change the direction and remember
+        # game instruction
         if event.type == pygame.KEYDOWN:
+            # snake movement
+            # change the direction and remember
             if event.key == pygame.K_LEFT and last_mov != "RIGHT":
                 x_mov = -10
                 y_mov = 0
@@ -65,6 +71,11 @@ while running:
                 x_mov = 0
                 y_mov = 10
                 last_mov = "DOWN"
+            # pause
+            elif event.key == pygame.K_ESCAPE:
+                game_menu.enable()
+
+
 
     # stop game if snake touched the yourself
     if len(snake.get_sprites_at((snake_head.rect.x, snake_head.rect.y))) > 1 and len(snake) > 2:
@@ -91,7 +102,8 @@ while running:
     surface.blit(score_disp, (0, 0))
     food_sprite.draw(surface)
     snake.draw(surface)
+
     
-    pygame.display.flip()
+    pygame.display.update()
 
 pygame.quit()

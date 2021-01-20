@@ -8,9 +8,10 @@ class GameMenu(pygame_menu.Menu):
         self.create_widgets(settings)
 
     def create_widgets(self, settings):
-        self.add_button('Play', pygame_menu.events.CLOSE)
+        self.add_button('Play', self.disable)
         self.add_button('Settings', settings)
         self.add_button('Quit', pygame_menu.events.EXIT)
+
 
 
 class SettingsMenu(pygame_menu.Menu):
