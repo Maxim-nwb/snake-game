@@ -46,6 +46,17 @@ class Food(pygame.sprite.Sprite):
             return False
 
     def update(self):
-        self.rect.x = random.randint(1, 590)
-        self.rect.y = random.randint(1, 490)
+        self.rect.x = random.randint(50, 550)
+        self.rect.y = random.randint(50, 450)
+
+
+
+class Borders(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.transform.scale(pygame.image.load("textures/border.png"), (600, 500))
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
+
 

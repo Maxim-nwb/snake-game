@@ -18,12 +18,18 @@ game_menu.enable()
 snake = pygame.sprite.LayeredUpdates()
 snake_head = Snake("textures/snake_head.png", 300, 250, 0)
 snake.add(snake_head)
-food_sprite = pygame.sprite.Group()
+
 
 # init food
+food_sprite = pygame.sprite.Group()
 food = Food()
 food_sprite.add(food)
 food_sprite.update()
+
+# init borders
+borders = pygame.sprite.Group()
+border = Borders()
+borders.add(border)
 
 # init score
 score = 0
@@ -36,7 +42,6 @@ last_mov = None # last direction of movement
 
 # variable for loop control
 running = True
-
 # game loop
 while running:
     # launching the menu
@@ -44,9 +49,9 @@ while running:
         game_menu.mainloop(surface)
 
     # init object for displaying score
-    score_disp = font.render(f'Score: {score}', 1, (165, 42, 42))
+    score_disp = font.render(f'Score: {score}', 1, (255, 215, 0))
     # FPS
-    clock.tick(10)
+    clock.tick(5)
     for event in pygame.event.get():
         # check for closing window
         if event.type == pygame.QUIT:
@@ -82,7 +87,7 @@ while running:
         running = False
 
     # stop game if snake touched the borders
-    if snake_head.rect.x >= 600 or snake_head.rect.x < 0 or snake_head.rect.y >= 500 or snake_head.rect.y < 0:
+    if pygame.sprite.collide_mask(snake_head, border):
         running = False
 
     # update screen
@@ -99,9 +104,11 @@ while running:
         food_sprite.update()
     # update playing field
     surface.fill((0, 0, 0))
-    surface.blit(score_disp, (0, 0))
     food_sprite.draw(surface)
     snake.draw(surface)
+    borders.draw(surface)
+    surface.blit(score_disp, (0, 0))
+    
 
     
     pygame.display.update()
