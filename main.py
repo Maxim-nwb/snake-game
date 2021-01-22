@@ -5,6 +5,7 @@ from game_entities import *
 
 # init game
 pygame.init()
+pygame.display.set_caption('Snake')
 surface = pygame.display.set_mode((600, 500))
 clock = pygame.time.Clock()
 
@@ -35,12 +36,16 @@ borders.add(border)
 score = 0
 font = pygame.font.SysFont(None, 36)
 
+# init settings
+SETTINGS = apply_settings()
+
 # variable for controlling movements
 x_mov = 0       
 y_mov = 0
 last_mov = None # last direction of movement
 
 # variable for loop control
+
 running = True
 # game loop
 while running:
@@ -103,7 +108,7 @@ while running:
         # creating new food
         food_sprite.update()
     # update playing field
-    surface.fill((0, 0, 0))
+    surface.fill(SETTINGS["BACKGROUND_COLOR"])
     food_sprite.draw(surface)
     snake.draw(surface)
     borders.draw(surface)

@@ -1,5 +1,6 @@
 import pygame
 import random
+import pickle
 
 class Snake(pygame.sprite.Sprite):
     def __init__(self, texture, x, y, index):
@@ -46,12 +47,14 @@ class Food(pygame.sprite.Sprite):
             return False
 
     def update(self):
+        # creating new food on random place in surface
         self.rect.x = random.randint(50, 550)
         self.rect.y = random.randint(50, 450)
 
 
 
 class Borders(pygame.sprite.Sprite):
+    # boundaries of the playing field
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.transform.scale(pygame.image.load("textures/border.png"), (600, 500))
@@ -60,3 +63,8 @@ class Borders(pygame.sprite.Sprite):
         self.rect.y = 0
 
 
+def apply_settings():
+    # function for load settings from file
+        with open('settings.dat', 'rb') as f:
+            SETTINGS = pickle.load(f)
+            return SETTINGS
