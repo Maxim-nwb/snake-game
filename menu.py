@@ -16,33 +16,34 @@ class GameMenu(pygame_menu.Menu):
 
 
 class SettingsMenu(pygame_menu.Menu):
-    def __init__(self):
+    def __init__(self, SETTINGS):
         super().__init__(400, 500, 'SETTINGS', theme=MyTheme)
-        self.USERNAME = "Username"
-        self.BACKGROUND_COLOR = (0, 0, 0)
-        self.DIFFICULTY = 1
+        self.USERNAME = SETTINGS["USERNAME"]
+        self.BACKGROUND_COLOR = SETTINGS["BACKGROUND_COLOR"][-1]
+        self.DIFFICULTY = SETTINGS["DIFFICULTY"]
         self.create_widgets()
 
     def create_widgets(self):
 
-        self.add_text_input('Player: ', default='Username', onchange=self.change_user)
+        self.add_text_input('Player: ', default=self.USERNAME, onchange=self.change_user)
 
         self.add_selector("Background Color: ", 
                           items=[
                                  ('Black', (0, 0, 0)),
                                  ('White', (255, 255, 255)),
-                                 ('Green', (0, 255, 0)),
                                  ('Red', (255, 0, 0)),
                                  ('Blue', (12, 12, 200))
                                  ],
+                          default=self.BACKGROUND_COLOR,
                           onchange=self.change_color
                           )
 
         self.add_selector('Difficulty', items=[
-                                 ('Easy', 1),
-                                 ('Middle', 2),
-                                 ('Hard', 3),
+                                 ('Easy', 0),
+                                 ('Middle', 1),
+                                 ('Hard', 2),
                                  ],
+                          default=self.DIFFICULTY,
                           onchange=self.save_difficulty)
 
         self.add_button('Save', self.save_data)
@@ -55,7 +56,7 @@ class SettingsMenu(pygame_menu.Menu):
         self.USERNAME = value[0]
 
     def change_color(self, *value):
-        self.BACKGROUND_COLOR = value[-1]
+        self.BACKGROUND_COLOR = (value[-1], value[0][1])
 
     def save_data(self):
         with open('settings.dat', 'wb') as f:

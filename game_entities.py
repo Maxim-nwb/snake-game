@@ -48,8 +48,8 @@ class Food(pygame.sprite.Sprite):
 
     def update(self):
         # creating new food on random place in surface
-        self.rect.x = random.randint(50, 550)
-        self.rect.y = random.randint(50, 450)
+        self.rect.x = random.randint(60, 540)
+        self.rect.y = random.randint(60, 440)
 
 
 

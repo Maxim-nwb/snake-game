@@ -9,8 +9,11 @@ pygame.display.set_caption('Snake')
 surface = pygame.display.set_mode((600, 500))
 clock = pygame.time.Clock()
 
+# init settings
+SETTINGS = apply_settings()
+
 # init menu
-settings_menu = SettingsMenu()
+settings_menu = SettingsMenu(SETTINGS)
 game_menu = GameMenu(settings_menu)
 game_menu.enable()
 
@@ -36,9 +39,6 @@ borders.add(border)
 score = 0
 font = pygame.font.SysFont(None, 36)
 
-# init settings
-SETTINGS = apply_settings()
-
 # variable for controlling movements
 x_mov = 0       
 y_mov = 0
@@ -56,7 +56,8 @@ while running:
     # init object for displaying score
     score_disp = font.render(f'Score: {score}', 1, (255, 215, 0))
     # FPS
-    clock.tick(5)
+    FPS = (SETTINGS["DIFFICULTY"] + score)/20
+    clock.tick(FPS)
     for event in pygame.event.get():
         # check for closing window
         if event.type == pygame.QUIT:
@@ -99,7 +100,7 @@ while running:
     snake.update(x_mov, y_mov)
     if food.chek_eating(snake_head):
         # adding points
-        score += 1
+        score += (SETTINGS["DIFFICULTY"] + 2)
         # get coordinates of the last element of the snake
         tail_x = snake.get_sprite(-1).rect.x
         tail_y = snake.get_sprite(-1).rect.y
@@ -108,7 +109,7 @@ while running:
         # creating new food
         food_sprite.update()
     # update playing field
-    surface.fill(SETTINGS["BACKGROUND_COLOR"])
+    surface.fill(SETTINGS["BACKGROUND_COLOR"][0])
     food_sprite.draw(surface)
     snake.draw(surface)
     borders.draw(surface)
