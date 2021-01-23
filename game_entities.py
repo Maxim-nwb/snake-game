@@ -62,9 +62,21 @@ class Borders(pygame.sprite.Sprite):
         self.rect.x = 0
         self.rect.y = 0
 
+#default settings
+DEFAULT_SETTINGS = { "USERNAME" : "Username",
+                         "BACKGROUND_COLOR" : ((0, 0, 0), 0),
+                         "DIFFICULTY" : 0
+                    }
 
 def apply_settings():
     # function for load settings from file
-        with open('settings.dat', 'rb') as f:
-            SETTINGS = pickle.load(f)
+        try:
+            with open('settings.dat', 'rb') as f:
+                SETTINGS = pickle.load(f)
+        # if the settings file was lost, we create it using the default settings
+        except FileNotFoundError:
+            with open('settings.dat', 'wb') as f:
+                pickle.dump(DEFAULT_SETTINGS, f)
+            SETTINGS = DEFAULT_SETTINGS
+        finally:
             return SETTINGS
