@@ -45,8 +45,8 @@ y_mov = 0
 last_mov = None # last direction of movement
 
 # variable for loop control
-
 running = True
+
 # game loop
 while running:
     # launching the menu

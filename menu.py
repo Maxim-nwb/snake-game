@@ -19,11 +19,14 @@ class SettingsMenu(pygame_menu.Menu):
     def __init__(self, SETTINGS):
         super().__init__(400, 500, 'SETTINGS', theme=MyTheme)
         self.USERNAME = SETTINGS["USERNAME"]
-        self.BACKGROUND_COLOR = SETTINGS["BACKGROUND_COLOR"][-1]
+        self.BACKGROUND_COLOR = SETTINGS["BACKGROUND_COLOR"]
         self.DIFFICULTY = SETTINGS["DIFFICULTY"]
         self.create_widgets()
 
     def create_widgets(self):
+
+        self.add_label("Attention!\nSettings will be applied after restarting the game!",
+                       **{'font_size': 30, 'font_color': (255, 0, 0)})
 
         self.add_text_input('Player: ', default=self.USERNAME, onchange=self.change_user)
 
@@ -32,9 +35,9 @@ class SettingsMenu(pygame_menu.Menu):
                                  ('Black', (0, 0, 0)),
                                  ('White', (255, 255, 255)),
                                  ('Red', (255, 0, 0)),
-                                 ('Blue', (12, 12, 200))
+                                 ('Blue', (0, 0, 255))
                                  ],
-                          default=self.BACKGROUND_COLOR,
+                          default=self.BACKGROUND_COLOR[-1],
                           onchange=self.change_color
                           )
 
@@ -47,6 +50,8 @@ class SettingsMenu(pygame_menu.Menu):
                           onchange=self.change_difficulty)
 
         self.add_button('Save', self.save_data)
+        self.add_label("", "saving_label", 
+                       **{'font_size': 30, 'font_color': (255, 0, 0)})
 
     # save settings
     def change_difficulty(self, *value):
@@ -65,6 +70,7 @@ class SettingsMenu(pygame_menu.Menu):
                          "DIFFICULTY" : self.DIFFICULTY
                         }
             pickle.dump(settings, f)
+        self.get_widget("saving_label").set_title("Settings saved!")
 
 
 #Theme
