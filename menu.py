@@ -44,12 +44,12 @@ class SettingsMenu(pygame_menu.Menu):
                                  ('Hard', 2),
                                  ],
                           default=self.DIFFICULTY,
-                          onchange=self.save_difficulty)
+                          onchange=self.change_difficulty)
 
         self.add_button('Save', self.save_data)
 
     # save settings
-    def save_difficulty(self, *value):
+    def change_difficulty(self, *value):
         self.DIFFICULTY = value[-1]
 
     def change_user(self, *value):

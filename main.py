@@ -51,7 +51,7 @@ running = True
 while running:
     # launching the menu
     if game_menu.is_enabled():
-        game_menu.mainloop(surface)
+        game_menu.mainloop(surface, lambda: surface.fill(SETTINGS["BACKGROUND_COLOR"][0]))
 
     # init object for displaying score
     score_disp = font.render(f'Score: {score}', 1, (255, 215, 0))
