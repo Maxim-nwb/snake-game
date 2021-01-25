@@ -1,5 +1,5 @@
 import pygame
-from menu import GameMenu, SettingsMenu
+from menu import GameMenu, SettingsMenu, PauseMenu
 from game_entities import *
 
 
@@ -15,6 +15,7 @@ SETTINGS = apply_settings()
 # init menu
 settings_menu = SettingsMenu(SETTINGS)
 game_menu = GameMenu(settings_menu)
+pause_menu = PauseMenu()
 game_menu.enable()
 
 # init entities
@@ -53,10 +54,18 @@ while running:
     if game_menu.is_enabled():
         game_menu.mainloop(surface, lambda: surface.fill(SETTINGS["BACKGROUND_COLOR"][0]))
 
+    if pause_menu.is_enabled():
+        pause_menu.get_widget("score").set_title(f"Score: {score}")
+        pause_menu.get_widget("user").set_title(f"User: {SETTINGS['USERNAME']}")
+        pause_menu.mainloop(surface, lambda: surface.fill(SETTINGS["BACKGROUND_COLOR"][0]))
+
     # init object for displaying score
     score_disp = font.render(f'Score: {score}', 1, (255, 215, 0))
     # FPS
     FPS = (SETTINGS["DIFFICULTY"] + score)/20
+    # artificial speed limit for a comfortable game
+    if FPS < 1: FPS = 1
+    if FPS > 15: FPS = 15
     clock.tick(FPS)
     for event in pygame.event.get():
         # check for closing window
@@ -84,7 +93,7 @@ while running:
                 last_mov = "DOWN"
             # pause
             elif event.key == pygame.K_ESCAPE:
-                game_menu.enable()
+                pause_menu.enable()
 
 
 

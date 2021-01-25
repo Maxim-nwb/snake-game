@@ -20,7 +20,7 @@ class SettingsMenu(pygame_menu.Menu):
         super().__init__(400, 500, 'SETTINGS', theme=MyTheme)
         self.USERNAME = SETTINGS["USERNAME"]
         self.BACKGROUND_COLOR = SETTINGS["BACKGROUND_COLOR"]
-        self.DIFFICULTY = SETTINGS["DIFFICULTY"]
+        self.DIFFICULTY = SETTINGS["DIFFICULTY"] - 1
         self.create_widgets()
 
     def create_widgets(self):
@@ -42,9 +42,9 @@ class SettingsMenu(pygame_menu.Menu):
                           )
 
         self.add_selector('Difficulty', items=[
-                                 ('Easy', 0),
-                                 ('Middle', 1),
-                                 ('Hard', 2),
+                                 ('Easy', 1),
+                                 ('Middle', 2),
+                                 ('Hard', 3),
                                  ],
                           default=self.DIFFICULTY,
                           onchange=self.change_difficulty)
@@ -71,6 +71,20 @@ class SettingsMenu(pygame_menu.Menu):
                         }
             pickle.dump(settings, f)
         self.get_widget("saving_label").set_title("Settings saved!")
+
+
+class PauseMenu(pygame_menu.Menu):
+    def __init__(self):
+        super().__init__(300, 300, 'Pause', theme=MyTheme, enabled=False)
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.add_label("", "user", 
+                       **{'font_size': 30, 'font_color': (255, 105, 180), 'margin': (-65,20)})
+        self.add_label("", "score", 
+                       **{'font_size': 30, 'font_color': (255, 105, 180), 'margin': (-100,20)})
+        self.add_button('Continue', self.disable)
+        self.add_button('Quit the game', pygame_menu.events.EXIT)
 
 
 #Theme
