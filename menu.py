@@ -4,6 +4,8 @@ import pickle
 
 
 class GameMenu(pygame_menu.Menu):
+    # main menu
+    # displayed at the beginning or on restart 
     def __init__(self, settings):
         super().__init__(400, 500, 'MENU', theme=MyTheme)
         self.create_widgets(settings)
@@ -16,11 +18,12 @@ class GameMenu(pygame_menu.Menu):
 
 
 class SettingsMenu(pygame_menu.Menu):
+    # settings menu of the game
     def __init__(self, SETTINGS):
         super().__init__(400, 500, 'SETTINGS', theme=MyTheme)
         self.USERNAME = SETTINGS["USERNAME"]
         self.BACKGROUND_COLOR = SETTINGS["BACKGROUND_COLOR"]
-        self.DIFFICULTY = SETTINGS["DIFFICULTY"] - 1
+        self.DIFFICULTY = SETTINGS["DIFFICULTY"]
         self.create_widgets()
 
     def create_widgets(self):
@@ -42,11 +45,11 @@ class SettingsMenu(pygame_menu.Menu):
                           )
 
         self.add_selector('Difficulty', items=[
-                                 ('Easy', 1),
-                                 ('Middle', 2),
-                                 ('Hard', 3),
+                                 ('Easy', 0),
+                                 ('Middle', 1),
+                                 ('Hard', 2),
                                  ],
-                          default=self.DIFFICULTY,
+                          default=self.DIFFICULTY[-1],
                           onchange=self.change_difficulty)
 
         self.add_button('Save', self.save_data)
@@ -55,7 +58,7 @@ class SettingsMenu(pygame_menu.Menu):
 
     # save settings
     def change_difficulty(self, *value):
-        self.DIFFICULTY = value[-1]
+        self.DIFFICULTY = value[0][0]
 
     def change_user(self, *value):
         self.USERNAME = value[0]
@@ -74,18 +77,34 @@ class SettingsMenu(pygame_menu.Menu):
 
 
 class PauseMenu(pygame_menu.Menu):
+    # Pause menu
+    # shown when you press "Esc" during the game
     def __init__(self):
-        super().__init__(300, 300, 'Pause', theme=MyTheme, enabled=False)
+        super().__init__(300, 500, 'Pause', theme=MyTheme, enabled=False)
         self.create_widgets()
 
     def create_widgets(self):
-        self.add_label("", "user", 
-                       **{'font_size': 30, 'font_color': (255, 105, 180), 'margin': (-65,20)})
-        self.add_label("", "score", 
-                       **{'font_size': 30, 'font_color': (255, 105, 180), 'margin': (-100,20)})
+        self.add_label("", "user_info", 
+                       **{'font_size': 30, 'font_color': (255, 105, 180), 'margin': (0, 20)})
+
         self.add_button('Continue', self.disable)
+        
         self.add_button('Quit the game', pygame_menu.events.EXIT)
 
+
+class DeadMenu(pygame_menu.Menu):
+    # Game over menu
+    # Displayed at death
+    def __init__(self):
+        super().__init__(340, 400, '', theme=MyTheme, enabled=False)
+        self.create_widgets()
+
+    def create_widgets(self):
+        self.add_label("GAME OVER!", **{'font_size': 100, 'font_color': (255, 0, 0)})
+        self.add_label("", "score", 
+                       **{'font_size': 30, 'font_color': (255, 105, 180), 'margin': (0, 20)})
+        self.add_button('Back to main menu', self.disable)
+        self.add_button('Quit the game', pygame_menu.events.EXIT)
 
 #Theme
 MyTheme = pygame_menu.themes.Theme(

@@ -65,7 +65,7 @@ class Borders(pygame.sprite.Sprite):
 #default settings
 DEFAULT_SETTINGS = { "USERNAME" : "Username",
                          "BACKGROUND_COLOR" : ((0, 0, 0), 0),
-                         "DIFFICULTY" : 1
+                         "DIFFICULTY" : ('Easy', 0)
                     }
 
 def apply_settings():
