@@ -39,7 +39,9 @@ class SettingsMenu(pygame_menu.Menu):
                                  ('Black', (0, 0, 0)),
                                  ('White', (255, 255, 255)),
                                  ('Red', (255, 0, 0)),
-                                 ('Blue', (0, 0, 255))
+                                 ('Blue', (0, 0, 255)),
+                                 ('Pink', (255, 20, 147)),
+                                 ('Aqua',(0, 255, 255))
                                  ],
                           default=self.BACKGROUND_COLOR[-1],
                           onchange=self.change_color
@@ -116,7 +118,7 @@ class LeaderboardMenu(pygame_menu.Menu):
 
     def create_widgets(self, leaderboard):
         for user in leaderboard:
-            self.add_label("{0}                     {1}".format(user, leaderboard[user]), **{'font_color': (255, 0, 0)})
+            self.add_label("{0}                                 {1}".format(user, int(leaderboard[user])), **{'font_color': (255, 0, 0), 'align': pygame_menu.locals.ALIGN_LEFT, 'margin': (40, 20)})
 
 
 #Theme
