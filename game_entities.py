@@ -1,6 +1,8 @@
 import pygame
 import random
 import pickle
+import os
+import sqlite3
 
 class Snake(pygame.sprite.Sprite):
     def __init__(self, texture, x, y, index):
@@ -80,3 +82,39 @@ def apply_settings():
             SETTINGS = DEFAULT_SETTINGS
         finally:
             return SETTINGS
+
+def get_leaderboard():
+    # connect to leaderboard
+    connect = sqlite3.connect('leaderboard.db')
+    cursor = connect.cursor()
+    # if it doesn't exist, create
+    if os.stat("leaderboard.db").st_size == 0:
+        cursor.execute("""CREATE TABLE leaderboard
+                       (user text, score real)
+                        """
+                       )
+
+        cursor.execute("""INSERT INTO leaderboard
+                        VALUES ('Author', 99999)"""
+                       )
+        connect.commit()
+    # getting the values
+    leaderboard = dict()
+    for user_stat in cursor.execute('SELECT * FROM leaderboard ORDER BY score DESC'):
+        leaderboard[user_stat[0]] = user_stat[-1]
+    connect.close()
+    return leaderboard
+
+def add_in_leaderboard(user, score):
+    # connect to leaderboard
+    connect = sqlite3.connect('leaderboard.db')
+    cursor = connect.cursor()
+    # check whether there is a user with this nickname in the table
+    # if a user with this nickname is already in the table - delete it
+    cursor.execute('DELETE FROM leaderboard WHERE user = "{0}" '.format(user))
+    # add a player to leaderboard
+    cursor.execute("""INSERT INTO leaderboard
+                   VALUES ('{0}', {1})""".format(user, score)
+                   )
+    connect.commit()
+    connect.close()

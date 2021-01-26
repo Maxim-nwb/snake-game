@@ -6,12 +6,13 @@ import pickle
 class GameMenu(pygame_menu.Menu):
     # main menu
     # displayed at the beginning or on restart 
-    def __init__(self, settings):
+    def __init__(self, settings, leaderboard):
         super().__init__(400, 500, 'MENU', theme=MyTheme)
-        self.create_widgets(settings)
+        self.create_widgets(settings, leaderboard)
 
-    def create_widgets(self, settings):
+    def create_widgets(self, settings, leaderboard):
         self.add_button('Play', self.disable)
+        self.add_button('Leaderboard', leaderboard)
         self.add_button('Settings', settings)
         self.add_button('Quit', pygame_menu.events.EXIT)
 
@@ -105,6 +106,18 @@ class DeadMenu(pygame_menu.Menu):
                        **{'font_size': 30, 'font_color': (255, 105, 180), 'margin': (0, 20)})
         self.add_button('Back to main menu', self.disable)
         self.add_button('Quit the game', pygame_menu.events.EXIT)
+
+class LeaderboardMenu(pygame_menu.Menu):
+    # LeaderBoard menu
+    # Shows the leaderboard
+    def __init__(self, leaderboard):
+        super().__init__(400, 500, 'Leaderboard', theme=MyTheme, enabled=False)
+        self.create_widgets(leaderboard)
+
+    def create_widgets(self, leaderboard):
+        for user in leaderboard:
+            self.add_label("{0}                     {1}".format(user, leaderboard[user]), **{'font_color': (255, 0, 0)})
+
 
 #Theme
 MyTheme = pygame_menu.themes.Theme(

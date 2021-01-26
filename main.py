@@ -1,5 +1,5 @@
 import pygame
-from menu import GameMenu, SettingsMenu, PauseMenu, DeadMenu
+from menu import *
 from game_entities import *
 
 
@@ -14,17 +14,20 @@ SETTINGS = apply_settings()
 
 # init menus
 settings_menu = SettingsMenu(SETTINGS)
-game_menu = GameMenu(settings_menu)
+leaderboard_menu = LeaderboardMenu(get_leaderboard())
+game_menu = GameMenu(settings_menu, leaderboard_menu)
 pause_menu = PauseMenu()
 dead_menu = DeadMenu()
 game_menu.enable()
 
 # init game over
-def game_over(score, x_mov, y_mov, last_mov):
+def game_over(user, score, x_mov, y_mov, last_mov):
     # show dead menu
     dead_menu.enable()
     dead_menu.get_widget("score").set_title(f"You score:  {score}")
     dead_menu.mainloop(surface, lambda: surface.fill((139, 0, 0)))
+    # add a player to leaderboard
+    add_in_leaderboard(user, score)
     # returns to the original position all the variables to control the game
     score = 0
     snake.empty()
@@ -119,11 +122,11 @@ while running:
 
     # stop game if snake touched the yourself
     if len(pygame.sprite.spritecollide(snake_head, snake, False)) > 1 and len(snake) > 3:
-        score, x_mov, y_mov, last_mov = game_over(score, x_mov, y_mov, last_mov)
+        score, x_mov, y_mov, last_mov = game_over(SETTINGS['USERNAME'], score, x_mov, y_mov, last_mov)
 
     # stop game if snake touched the borders
     if pygame.sprite.collide_mask(snake_head, border):
-        score, x_mov, y_mov, last_mov = game_over(score, x_mov, y_mov, last_mov)
+        score, x_mov, y_mov, last_mov = game_over(SETTINGS['USERNAME'], score, x_mov, y_mov, last_mov)
 
     # update screen
     snake.update(x_mov, y_mov)
