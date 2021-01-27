@@ -113,10 +113,12 @@ class LeaderboardMenu(pygame_menu.Menu):
     # LeaderBoard menu
     # Shows the leaderboard
     def __init__(self, leaderboard):
-        super().__init__(400, 500, 'Leaderboard', theme=MyTheme, enabled=False)
+        super().__init__(400, 500, 'Leaderboard', theme=MyTheme, enabled=False, center_content=False)
         self.create_widgets(leaderboard)
 
     def create_widgets(self, leaderboard):
+        self.add_label("Table will be updated after restarting the game!",
+                       **{'font_size': 20, 'font_color': (255, 0, 0), 'margin': (0, 20)})
         for user in leaderboard:
             self.add_label("{0}                                 {1}".format(user, int(leaderboard[user])), **{'font_color': (255, 0, 0), 'align': pygame_menu.locals.ALIGN_LEFT, 'margin': (40, 20)})
 
